@@ -1,9 +1,9 @@
 {
+	"title": "$:/plugins/neuroforest/core",
+	"name": "Neuroforest Core",
 	"description": "NeuroForest Core",
 	"list": "readme",
-	"name": "Neuroforest Core",
-	"source": "https://github.com/neuroforest/tw5-plugins.git",
+	"source": "https://github.com/neuroforest/tp-core.git",
 	"stability": "STABILITY_2_STABLE",
-	"title": "$:/plugins/neuroforest/core",
-	"version": "1.2.2"
+	"version": "1.2.3"
 }
