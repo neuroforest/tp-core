@@ -7,16 +7,14 @@ module-type: startup
 const fs = require("fs");
 
 /*
-Log message to local file system
+Write trace to local file system
 */
-function logLocal(messageElements, suffix) {
+function trace(messageElements, suffix) {
   if (messageElements[0].startsWith("Draft of ")) {
     return;
   }
-  var storageTiddler = $tw.wiki.getTiddler("$:/config/neuroforest/storage");
-  if (storageTiddler) {
-    var storagePath = storageTiddler.fields.text;
-  } else {
+  var dataPath = process.env.NF_DATA;
+  if (!dataPath) {
     return;
   }
   var now = new Date();
@@ -25,23 +23,23 @@ function logLocal(messageElements, suffix) {
   var moment = $tw.utils.stringifyDate(now);
   messageElements.unshift(moment);
 
-  var logDir = `${storagePath}/logs/${yearMonth}`
+  var traceDir = `${dataPath}/traces/${yearMonth}`
 
-  if (!fs.existsSync(logDir)) {
-    fs.mkdir(logDir, { recursive: true }, function(err) {
+  if (!fs.existsSync(traceDir)) {
+    fs.mkdir(traceDir, { recursive: true }, function(err) {
       if (err) throw err;
-        console.log(`Error creating directory ${logDir}`);
+        console.log(`Error creating directory ${traceDir}`);
     });
   }
 
-  var logFile = `${logDir}/${yearMonthDay}-${suffix}.txt`;
-  var log = messageElements.join("|") + "\n";
-  fs.appendFile(logFile, log, function(err) {
+  var traceFile = `${traceDir}/${yearMonthDay}-${suffix}.txt`;
+  var entry = messageElements.join("|") + "\n";
+  fs.appendFile(traceFile, entry, function(err) {
     if (err) {
       console.error("Error writing to file:", err);
     }
   });
-  console.log(`neuroforest/core: Log navigation to '${messageElements[1]}'`)
+  console.log(`neuroforest/core: Trace '${messageElements[1]}'`)
 }
 
 
@@ -52,7 +50,7 @@ $tw.hooks.addHook("th-saving-tiddler", function(tiddler) {
   } else {
     var newTiddler = tiddler;
   }
-  logLocal([tiddler.fields["title"], newTiddler.fields["neuro.id"]], "save");
+  trace([tiddler.fields["title"], newTiddler.fields["neuro.id"]], "save");
   return newTiddler;
 });
 
@@ -66,9 +64,9 @@ $tw.hooks.addHook("th-navigating", function(tiddler) {
     if (tiddler.navigateFromTitle) {
       var source = tiddler.navigateFromTitle;
       var sourceUuid = $tw.wiki.getTiddler(source).fields["neuro.id"];
-      logLocal([target, targetUuid, source, sourceUuid], "navigate")
+      trace([target, targetUuid, source, sourceUuid], "navigate")
     } else {
-      logLocal([target, targetUuid, "", ""], "navigate")
+      trace([target, targetUuid, "", ""], "navigate")
     }
     return tiddler;
   }
