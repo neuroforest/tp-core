@@ -19,7 +19,9 @@ exports.before = ["render"];
 exports.synchronous = true;
 
 exports.startup = function() {
-	require("$:/plugins/tiddlywiki/katex/mhchem.min.js");
+	if($tw.wiki.getTiddler("$:/plugins/tiddlywiki/katex")) {
+		require("$:/plugins/tiddlywiki/katex/mhchem.min.js");
+	}
 };
 
 })();
