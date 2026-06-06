@@ -177,7 +177,7 @@ exports.nfReplace = function(oldText, newText, filter) {
 
     // Do not replace text in identifiers
     for (var field in tiddler.fields) {
-      var ignoreFields = ["title", "neuro.id", "tmap.id"];
+      var ignoreFields = ["title", "nid", "tmap.id"];
       if (ignoreFields.indexOf(field) > -1) {
         continue;
       } else if (typeof tiddler.fields[field] === "string") {
@@ -248,14 +248,14 @@ exports.nfMerge = function(tiddlerTitles) {
   var tiddlerFields = new Object();
   var oldestCreated = new Date();
   var text = new String();
-  var neuroId = new String();
+  var nid = new String();
   tiddlers.forEach(function(tiddlerNew) {
     const newCreated = tiddlerNew.fields.created;
     // Handle the 'created' field
     if (newCreated) {
       if (newCreated < oldestCreated) {
         oldestCreated = newCreated;
-        neuroId = tiddlerNew.fields["neuro.id"];
+        nid = tiddlerNew.fields["nid"];
       }
     }
 
@@ -267,7 +267,7 @@ exports.nfMerge = function(tiddlerTitles) {
     // Handle other fields
     for (const fieldName in tiddlerNew.fields) {
       const fieldValue = tiddlerNew.fields[fieldName];
-      if (["created", "neuro.id", "text"].indexOf(fieldName) !== -1) {
+      if (["created", "nid", "text"].indexOf(fieldName) !== -1) {
         continue;
       }
 
@@ -281,7 +281,7 @@ exports.nfMerge = function(tiddlerTitles) {
 
   tiddlerFields.created = oldestCreated;
   tiddlerFields.text = text;
-  tiddlerFields["neuro.id"] = neuroId;
+  tiddlerFields["nid"] = nid;
 
   var targetTitle = tiddlerFields.title;
   tiddlers.forEach(function(tiddlerNew) {

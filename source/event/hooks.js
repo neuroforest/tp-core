@@ -44,13 +44,13 @@ function trace(messageElements, suffix) {
 
 
 $tw.hooks.addHook("th-saving-tiddler", function(tiddler) {
-  if (!tiddler.fields["neuro.id"]) {
-    console.log(`neuroforest/core: Adding "neuro.id" field: ${tiddler.fields.title}`)
-    var newTiddler = new $tw.Tiddler(tiddler.fields, {"neuro.id": $tw.utils.genUUID()});
+  if (!tiddler.fields["nid"]) {
+    console.log(`neuroforest/core: Adding "nid" field: ${tiddler.fields.title}`)
+    var newTiddler = new $tw.Tiddler(tiddler.fields, {"nid": $tw.utils.genUUID()});
   } else {
     var newTiddler = tiddler;
   }
-  trace([tiddler.fields["title"], newTiddler.fields["neuro.id"]], "save");
+  trace([tiddler.fields["title"], newTiddler.fields["nid"]], "save");
   return newTiddler;
 });
 
@@ -60,10 +60,10 @@ $tw.hooks.addHook("th-navigating", function(tiddler) {
   if (!targetTiddler) {
     return tiddler;
   } else {
-    var targetUuid = $tw.wiki.getTiddler(target).fields["neuro.id"];
+    var targetUuid = $tw.wiki.getTiddler(target).fields["nid"];
     if (tiddler.navigateFromTitle) {
       var source = tiddler.navigateFromTitle;
-      var sourceUuid = $tw.wiki.getTiddler(source).fields["neuro.id"];
+      var sourceUuid = $tw.wiki.getTiddler(source).fields["nid"];
       trace([target, targetUuid, source, sourceUuid], "navigate")
     } else {
       trace([target, targetUuid, "", ""], "navigate")

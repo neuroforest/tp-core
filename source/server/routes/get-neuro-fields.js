@@ -13,7 +13,7 @@ GET /neuro/fields.json?filter=<filter>&fields=<fields>
 "use strict";
 
 var DEFAULT_FILTER = "[all[tiddlers]!is[system]sort[title]]",
-DEFAULT_FIELDS = "neuro_id,tags,title"
+DEFAULT_FIELDS = "nid,tags,title"
 
 exports.method = "GET";
 

@@ -286,8 +286,8 @@ NavigatorWidget.prototype.makeDraftTiddler = function(targetTitle) {
 				title: draftTitle,
 				"draft.title": targetTitle,
 				"draft.of": targetTitle,
-				"draft.neuro.id": tiddler ? tiddler.fields["neuro.id"] : undefined,
-				"neuro.id": $tw.utils.genUUID()
+				"draft.nid": tiddler ? tiddler.fields["nid"] : undefined,
+				"nid": $tw.utils.genUUID()
 			},
 			this.wiki.getModificationFields(),
 			tiddler === null || tiddler === undefined ? defaultFields : {}
@@ -313,7 +313,7 @@ NavigatorWidget.prototype.handleSaveTiddlerEvent = function(event) {
 	if(tiddler) {
 		var draftTitle = (tiddler.fields["draft.title"] || "").trim(),
 			draftOf = (tiddler.fields["draft.of"] || "").trim(),
-			neuroId = tiddler.fields["draft.neuro.id"] ?? tiddler.fields["neuro.id"];
+			nid = tiddler.fields["draft.nid"] ?? tiddler.fields["nid"];
 		if(draftTitle) {
 			var isRename = draftOf !== draftTitle,
 				isConfirmed = true;
@@ -331,8 +331,8 @@ NavigatorWidget.prototype.handleSaveTiddlerEvent = function(event) {
 					title: draftTitle,
 					"draft.title": undefined,
 					"draft.of": undefined,
-					"draft.neuro.id": undefined,
-					"neuro.id": neuroId
+					"draft.nid": undefined,
+					"nid": nid
 				},this.wiki.getModificationFields());
 				newTiddler = $tw.hooks.invokeHook("th-saving-tiddler",newTiddler,tiddler);
 				this.wiki.addTiddler(newTiddler);
@@ -482,7 +482,7 @@ NavigatorWidget.prototype.handleNewTiddlerEvent = function(event) {
 		{
 			title: draftTitle,
 			"draft.of": title,
-			"neuro.id": $tw.utils.genUUID(),
+			"nid": $tw.utils.genUUID(),
 			// If template or additionalFields have "tags" even if empty a tags field will be created.
 			tags: ((mergedTags.length > 0) || templateHasTags || additionalFieldsHasTags) ? mergedTags : undefined
 		},this.wiki.getModificationFields());
